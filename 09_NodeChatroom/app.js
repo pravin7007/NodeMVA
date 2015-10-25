@@ -12,7 +12,7 @@ var path = require('path');
 var mongo = require('mongodb').MongoClient;
 
 var app = express();
-var url = 'mongodb://127.0.0.1:27017/test';
+
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
@@ -44,7 +44,7 @@ serve.listen(app.get('port'), function () {
 io.on('connection', function (socket) {
     console.log('a user connected');
 
-    mongo.connect(url, function (err, db) {
+    mongo.connect(process.env.CUSTOMCONNSTR_MONGOLAB_URI, function (err, db) {
         if(err){
             console.warn(err.message);
         } else {
@@ -59,7 +59,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('chat', function (msg) {
-        mongo.connect(url, function (err, db) {
+        mongo.connect(process.env.CUSTOMCONNSTR_MONGOLAB_URI, function (err, db) {
             if(err){
                 console.warn(err.message);
             } else {
